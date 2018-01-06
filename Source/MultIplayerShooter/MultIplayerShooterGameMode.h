@@ -13,6 +13,10 @@ class AMultIplayerShooterGameMode : public AGameModeBase
 
 public:
 	AMultIplayerShooterGameMode();
+public:
+	void GameComplete(APawn* InstigatorPawn);
+	UFUNCTION(BlueprintImplementableEvent, category = "Game Mode")
+	void OnGameComplete(APawn* InstigatorPawn);
 };
 
 

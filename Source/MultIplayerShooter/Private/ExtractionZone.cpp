@@ -4,6 +4,7 @@
 #include "Components/BoxComponent.h"
 #include "Components/DecalComponent.h"
 #include "MultIplayerShooterCharacter.h"
+#include "MultIplayerShooterGameMode.h"
 // Sets default values
 AExtractionZone::AExtractionZone()
 {
@@ -29,7 +30,11 @@ void AExtractionZone::HandleBeginOverlap(UPrimitiveComponent* OverlappedComponen
 	{
 		if (PlayerCharacter->HasObjective())
 		{
-
+			AMultIplayerShooterGameMode* CurrentGameMode = Cast<AMultIplayerShooterGameMode>(GetWorld()->GetAuthGameMode());
+			if (CurrentGameMode)
+			{
+				CurrentGameMode->GameComplete(PlayerCharacter);
+			}
 		}
 	}
 }

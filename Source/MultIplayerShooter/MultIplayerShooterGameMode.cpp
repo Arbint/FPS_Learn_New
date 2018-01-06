@@ -15,3 +15,12 @@ AMultIplayerShooterGameMode::AMultIplayerShooterGameMode()
 	// use our custom HUD class
 	HUDClass = AMultIplayerShooterHUD::StaticClass();
 }
+
+void AMultIplayerShooterGameMode::GameComplete(APawn* InstigatorPawn)
+{
+	if (InstigatorPawn)
+	{
+		InstigatorPawn->DisableInput(nullptr);
+	}
+	OnGameComplete(InstigatorPawn);
+}
