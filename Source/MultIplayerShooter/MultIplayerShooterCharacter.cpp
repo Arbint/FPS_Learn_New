@@ -297,3 +297,13 @@ bool AMultIplayerShooterCharacter::EnableTouchscreenMovement(class UInputCompone
 	
 	return false;
 }
+
+void AMultIplayerShooterCharacter::SetHasObjective(bool bNewHasObjecive)
+{
+	bHasObjective = bNewHasObjecive;
+}
+
+bool AMultIplayerShooterCharacter::HasObjective()
+{
+	return bHasObjective;
+}

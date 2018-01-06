@@ -6,7 +6,7 @@
 #include "TextureResource.h"
 #include "CanvasItem.h"
 #include "UObject/ConstructorHelpers.h"
-
+#include "Blueprint/UserWidget.h"
 AMultIplayerShooterHUD::AMultIplayerShooterHUD()
 {
 	// Set the crosshair texture
@@ -33,3 +33,17 @@ void AMultIplayerShooterHUD::DrawHUD()
 	TileItem.BlendMode = SE_BLEND_Translucent;
 	Canvas->DrawItem( TileItem );
 }
+
+void AMultIplayerShooterHUD::BeginPlay()
+{
+	Super::BeginPlay();
+	if (UIWidgetToUse && GetOwningPlayerController())
+	{
+		MainUI = CreateWidget<UUserWidget>(GetOwningPlayerController(), UIWidgetToUse);
+		if (MainUI)
+		{
+			MainUI->AddToViewport();
+		}
+	}
+}
+
