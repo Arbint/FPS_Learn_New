@@ -17,6 +17,9 @@ public:
 	void GameComplete(APawn* InstigatorPawn);
 	UFUNCTION(BlueprintImplementableEvent, category = "Game Mode")
 	void OnGameComplete(APawn* InstigatorPawn);
+protected:
+	UPROPERTY(EditDefaultsOnly, Category = "Spectating")
+	TSubclassOf<AActor> SpectatingActorClass;
 };
 
 

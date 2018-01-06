@@ -22,4 +22,6 @@ public:
 	UDecalComponent* DecalComp;
 	UFUNCTION()
 	void HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	UPROPERTY(EditDefaultsOnly, Category = "Function")
+	USoundBase* ObjectiveMissingSound;
 };

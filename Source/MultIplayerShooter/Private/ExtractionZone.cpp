@@ -5,6 +5,7 @@
 #include "Components/DecalComponent.h"
 #include "MultIplayerShooterCharacter.h"
 #include "MultIplayerShooterGameMode.h"
+#include "Kismet/GameplayStatics.h"
 // Sets default values
 AExtractionZone::AExtractionZone()
 {
@@ -26,16 +27,21 @@ AExtractionZone::AExtractionZone()
 void AExtractionZone::HandleBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	AMultIplayerShooterCharacter* PlayerCharacter = Cast<AMultIplayerShooterCharacter>(OtherActor);
-	if (ensure(PlayerCharacter))
+	if (!ensure(PlayerCharacter))
 	{
-		if (PlayerCharacter->HasObjective())
+		return;
+	}
+	if (PlayerCharacter->HasObjective())
+	{
+		AMultIplayerShooterGameMode* CurrentGameMode = Cast<AMultIplayerShooterGameMode>(GetWorld()->GetAuthGameMode());
+		if (CurrentGameMode)
 		{
-			AMultIplayerShooterGameMode* CurrentGameMode = Cast<AMultIplayerShooterGameMode>(GetWorld()->GetAuthGameMode());
-			if (CurrentGameMode)
-			{
-				CurrentGameMode->GameComplete(PlayerCharacter);
-			}
+			CurrentGameMode->GameComplete(PlayerCharacter);
 		}
+	}
+	else
+	{
+		UGameplayStatics::PlaySound2D(this, ObjectiveMissingSound);
 	}
 }
 

@@ -4,7 +4,7 @@
 #include "MultIplayerShooterHUD.h"
 #include "MultIplayerShooterCharacter.h"
 #include "UObject/ConstructorHelpers.h"
-
+#include "Kismet/GameplayStatics.h"
 AMultIplayerShooterGameMode::AMultIplayerShooterGameMode()
 	: Super()
 {
@@ -18,9 +18,28 @@ AMultIplayerShooterGameMode::AMultIplayerShooterGameMode()
 
 void AMultIplayerShooterGameMode::GameComplete(APawn* InstigatorPawn)
 {
-	if (InstigatorPawn)
+	if (!InstigatorPawn)
 	{
-		InstigatorPawn->DisableInput(nullptr);
+		return;
 	}
+	InstigatorPawn->DisableInput(nullptr);
+	APlayerController* PCtrl = Cast<APlayerController>(InstigatorPawn->GetController());
+	if (PCtrl != nullptr)
+	{
+		TArray<AActor*> NewViewTargetActors;
+		if (SpectatingActorClass)
+		{
+			UGameplayStatics::GetAllActorsOfClass(this, SpectatingActorClass, NewViewTargetActors);
+			if (NewViewTargetActors.Num()>0)
+			{
+				AActor* SpectatingActor = NewViewTargetActors[0];
+				PCtrl->SetViewTargetWithBlend(SpectatingActor, 1.0f, EViewTargetBlendFunction::VTBlend_Cubic);
+			}
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Cannot find spectating class in game mode, please specify in game mode. Cannot change view target for the controller after winning"));
+		}
+	}	
 	OnGameComplete(InstigatorPawn);
 }
